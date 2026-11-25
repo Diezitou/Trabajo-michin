@@ -4,7 +4,6 @@ embarcaciones=[]
 embarc_sin_repetir=[]
 capturas=[]
 cuota_diaria_kg=400
-ultimo_registro=0
 
 #======== Aquí Estan las funciones. Haz click en la flecha atrás de def para expandir ======
 def validar_num(num):
