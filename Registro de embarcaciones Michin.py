@@ -5,7 +5,7 @@ embarc_sin_repetir=[]
 capturas=[]
 cuota_diaria_kg=400
 
-#======== Aquí Estan las funciones. Haz click en la flecha atrás de def para expandir ======
+#======== Aquí Estan las funciones. Haz click en la flecha atrás de def para expandir (DUQUE) ======
 def validar_num(num):
     """""Valida que se haya ingresado un numero entero"""
     try:
@@ -13,14 +13,14 @@ def validar_num(num):
         return num
     except:
         return ''
-
+#================== SEPARAR(DUQUE) ======================
 def Separar(n):
     """""Crea un titulo o una separacion en la terminal"""
     if n=='':
      print('='*50)
     else :
       return f'{'='*25} {n} {'='*25}'
-  
+#================= BUSQUEDA LINEAL (DUQUE)===================  
 def busqueda_lineal(lista, valor):
     """"Encuentra o no un valor dado sin distinguir mayúsculas ni minúsculas"""
     valor_buscado = str(valor).lower().strip()
@@ -28,13 +28,13 @@ def busqueda_lineal(lista, valor):
         if str(lista[i]).lower().strip()==valor_buscado:
             return i
     return -1
-
+#================ SUMA RECURSIVA (MICHAEL) ================
 def suma_recursiva(lista):
     """Calcula recursivamente la suma de las capturas de una embarcación."""
     if len(lista) == 0:
         return 0
     return lista[0] + suma_recursiva(lista[1:])
-
+#============== MAXIMA CAPTURA RECURSICA (MICHAEL) ===========
 def maximo_recursivo(lista):
     """Devuelve recursivamente la mayor captura diaria de una embarcación."""
     if len(lista) == 0:
@@ -43,14 +43,14 @@ def maximo_recursivo(lista):
         return lista[0]
     mayor_resto = maximo_recursivo(lista[1:])
     return lista[0] if lista[0] > mayor_resto else mayor_resto
-
+#================== DIAS SIN CAPTURA (MICHAEL )===============
 def contar_dias_sin_captura(lista):
     """Cuenta recursivamente cuántos días la embarcación registró 0 kg."""
     if len(lista) == 0:
         return 0
     dia_cero = 1 if lista[0] == 0 else 0
     return dia_cero + contar_dias_sin_captura(lista[1:])
-
+#================= COMPARAR EMBARCACIONES (PRADO) ================
 def comparar_embar(embarcaciones, totales):             #12. identifca cual es la embarcacion con mayor y menor captur semanal y así
     """Identifica la embarcación con mayor y menor captura semanal"""
     mayor = 0
@@ -64,7 +64,8 @@ def comparar_embar(embarcaciones, totales):             #12. identifca cual es l
             menor = i
 
     return embarcaciones[mayor], totales[mayor], embarcaciones[menor], totales[menor]
-    
+
+#=================== SUMATORIA SEMANAL DE CAPTURAS (PRADO)=====================
 def calcular_total_sem(embarcaciones, capturas):        # 10. calcular total semanal
     """calcula el total semanal de una embarcacion"""
     totales = []
@@ -76,7 +77,7 @@ def calcular_total_sem(embarcaciones, capturas):        # 10. calcular total sem
         totales.append(suma)
 
     return totales
-
+#===================== TOTAL DIARIO DE CAPTURAS(PRADO) =================
 def total_diario(embarcaciones, capturas):              # 11. calcular total de cada día
     """calcula el total de cada dia"""
     total_dia = []
@@ -89,7 +90,7 @@ def total_diario(embarcaciones, capturas):              # 11. calcular total de 
         total_dia.append(suma)
 
     return total_dia
-
+#==================== MEJOR DIA RECURSICA (PRADO)=================
 def mejor_dia(total_dia):                               # Esta es la siguient función, es la que identific el mejor día de pesca, yayyyy
     """Encuentra el mejor dia de pesca"""
     mayor = 0
@@ -99,7 +100,7 @@ def mejor_dia(total_dia):                               # Esta es la siguient fu
             mayor = j
 
     return DIAS[mayor], total_dia[mayor]
-    
+#================ RANKING DE EMBARCACIONES (JOSEPH)====================
 def ranking_embarcaciones(lista_nombres, matriz_capturas):
     "Devuelve dos listas ordenadas de mayor a menor captura semanal: los nombres y sus totales y no modifica las listas originales"
     nombres_rank = []
@@ -124,6 +125,7 @@ def ranking_embarcaciones(lista_nombres, matriz_capturas):
                 nombres_rank[j + 1] = temp
     return nombres_rank, totales_rank
 
+#============ VERIFICAR CUOTA (PRADO)=====================
 def verificar_cuota(embarcaciones, capturas):               # 13. la cosa de la cuota, la cual tuve ke cambiarle a la variable esta okiii
     """Lista los casos en que una embarcación superó la cuota diaria"""
     excesos = []
@@ -135,6 +137,7 @@ def verificar_cuota(embarcaciones, capturas):               # 13. la cosa de la 
 
     return excesos
 
+#================= MOSTRAR MATRIZ (PRADO) ====================
 def mostrar_matriz(embarcaciones, capturas,             # 14. muestr la matriz alinead, el punto final, okei, todo listo cuate
                    totales, total_dia):
     """Construye la matriz alineada con totales por fila y por columna"""
@@ -163,6 +166,7 @@ def mostrar_matriz(embarcaciones, capturas,             # 14. muestr la matriz a
     lineas.append(fila_total)
     return "\n".join(lineas)
 
+#================= PROBAR FUNCIONES DE CALCULO (MICHAEL )============
 def probar():
     """Verifica funciones de cálculo y recursión con casos normales y de borde"""
     assert suma_recursiva([]) == 0
@@ -198,7 +202,7 @@ def probar():
     assert comparar_embar(embs_prueba, tot_iter) == ("La Manabita", 1960, "Estrella", 620)
     assert len(verificar_cuota(embs_prueba, caps_prueba)) == 4
 
-#================== Este es el menú de opciones. Aún falta agregar opciones =========================
+#================== MENÚ PRINCIPAL =========================
 
 while True:
     print(f'{Separar('Menú principal')}')
@@ -212,14 +216,14 @@ while True:
     print("8- Mayor y menor captura semanal")
     print("9- Verificar cuota diaria")
     print("10- Mostrar matriz de capturas")
-    print("11- Estadísticas recursivas por embarcación")
+    print("11- Estadísticas por embarcación")
     print("12- Cargar datos de prueba")
     print("13- Ejecutar pruebas (probar)")
     print("14- Salir")
     eleccion_menu=input('Elección: ')
     match eleccion_menu:
         
-        #================================INGRESO DE EMBARCACIONES===============================
+        #================================INGRESO DE EMBARCACIONES (DUQUE)===============================
         case '1':
             print('pepe1')
                 #========Ingreso de la cantidad de embarcaciones que se van a ingresar======
@@ -252,7 +256,7 @@ while True:
                     else:
                         print(Separar('Error: El nombre de la embarcación no puede estar vacío'))
                         
-        #========================== INGRESO DE CAPTURAS ====================================             
+        #========================== INGRESO DE CAPTURAS (DUQUE)====================================             
         case '2':
             if len(embarcaciones)!=0:
                     while True:
@@ -327,7 +331,7 @@ while True:
             else:
                 print(Separar("Error: No se han registrado embarcaciones, por lo que no se pueden ingresar capturas"))
                                 
-
+        #======================== Buscar embarcaciones ====================================
         case '3':
             if len(embarcaciones)!=0:
                 for i in range(len(embarcaciones)):
@@ -335,6 +339,7 @@ while True:
             else:
                 print(Separar("Error: No se han registrado embarcaciones, por lo que no se pueden ingresar capturas"))
                 
+        #=========================== Eliminar embarcaciones (DUQUE)=============================      
         case '4':
             if len(embarcaciones)!=0:
                 print(Separar("Seleccione la embarcacion que desea eliminar"))
@@ -347,6 +352,7 @@ while True:
             else:
                 print(Separar("Error: No se han registrado embarcaciones, por lo que no se pueden ingresar capturas"))  
                 
+        #================================== Ranking de embarcaciones (JOSEPH)=========================
         case '5':
             if len(embarcaciones) == 0:
                 print(Separar("Aún no hay embarcaciones registradas"))
@@ -356,8 +362,9 @@ while True:
                 nombres_rank, totales_rank = ranking_embarcaciones(embarcaciones, capturas)
                 print(Separar("Ranking semanal"))
                 for i in range(len(nombres_rank)):
-                    print(f"{i + 1}. {nombres_rank[i]} - {totales_rank[i]} kg")       
-
+                    print(f"{i + 1}. {nombres_rank[i]} - {totales_rank[i]} kg")      
+                     
+        #===============================Total semanal por embarcaciones (PRADO)============================
         case '6':
             if len(embarcaciones) == 0:
                 print(Separar("Aún no hay embarcaciones registradas"))
@@ -366,7 +373,8 @@ while True:
                 print(Separar("Total semanal por embarcación"))
                 for i in range(len(embarcaciones)):
                     print(f"{embarcaciones[i]}: {totales[i]} kg")
-
+                    
+        #================================ Mejor día de pesca y total diario (PRADO)=======================
         case '7':
             if len(embarcaciones) == 0:
                 print(Separar("Aún no hay embarcaciones registradas"))
@@ -379,7 +387,8 @@ while True:
                 print(Separar("Total por día"))
                 for j in range(len(DIAS)):
                     print(f"{DIAS[j]}: {totales_dia[j]} kg")
-
+                    
+        #======================== Mayor y menor captura (PRADO)===============================
         case '8':
             if len(embarcaciones) == 0:
                 print(Separar("Aún no hay embarcaciones registradas"))
@@ -390,7 +399,8 @@ while True:
                 print(emb_mayor, ":", kg_mayor, "KG")
                 print("Menor captura:")
                 print(emb_menor, ":", kg_menor, "KG")
-
+                
+        #==================== Embarcaiones que superaron o no la cuota diaria (PRADO)==============
         case '9':
             if len(embarcaciones) == 0:
                 print(Separar("Aún no hay embarcaciones registradas"))
@@ -405,7 +415,8 @@ while True:
                         print("Día:", dia)
                         print("Captura:", kg, "KG")
                         print("---------------------------")
-
+                        
+        #================== Mostrar matriz de embarcaciones (PRADO)==================
         case '10':
             if len(embarcaciones) == 0:
                 print(Separar("Aún no hay embarcaciones registradas"))
@@ -413,7 +424,8 @@ while True:
                 totales = calcular_total_sem(embarcaciones, capturas)
                 totales_dia = total_diario(embarcaciones, capturas)
                 print(mostrar_matriz(embarcaciones, capturas, totales, totales_dia))
-
+                
+        #=========================== Mostrar estadisticas (MICHAEL) ==============================
         case '11':
             if len(embarcaciones) == 0:
                 print(Separar("Aún no hay embarcaciones registradas"))
@@ -424,7 +436,7 @@ while True:
                     max_rec = maximo_recursivo(capturas[i])
                     dias_cero = contar_dias_sin_captura(capturas[i])
                     print(f"{embarcaciones[i]} -> Total: {total_rec} kg | Máximo diario: {max_rec} kg | Días sin captura: {dias_cero}")
-
+        #=================== Cargar datos de prueba (MICHAEL)===================
         case '12':
             embarcaciones[:] = ["Don Lucho", "Mar Azul", "La Manabita", "Estrella"]
             embarc_sin_repetir[:] = ["Don Lucho", "Mar Azul", "La Manabita", "Estrella"]
@@ -435,14 +447,14 @@ while True:
                 [90, 120, 0, 0, 160, 140, 110]
             ]
             print(Separar("Datos de prueba cargados"))
-
+        #======================= Pruebas (MICHAEL) ======================
         case '13':
             probar()
             print(Separar("Todas las pruebas pasaron correctamente"))
-        
+        #============= Cerrar sistema (DUQUE)===========================
         case '14':
             print(Separar("Gracias por usar nuestro sistema"))
             break
-        
+        #================== Exepción: cuando se elije una opción no existente ========
         case _:
             print(Separar("Error: ingrese una opción válida"))
