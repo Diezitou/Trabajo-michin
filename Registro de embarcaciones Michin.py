@@ -1,10 +1,9 @@
 #==== Aquí se definen algunas variables y constantes =====
 DIAS = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"]
-embarcaciones = ["dfdffd", "xcdfdxvd", "skdnjds"]
-embarc_sin_repetir= []
+embarcaciones = []
+embarc_sin_repetir=[]
 capturas=[]
 cuota_diaria_kg=400
-registro_actualizado=False
 ultimo_registro=0
 
 
@@ -21,6 +20,13 @@ def Separar(n):
      print('='*50)
     else :
       return f'{'='*25} {n} {'='*25}'
+  
+def busqueda_lineal(lista, valor):
+    for i in range(len(lista)):
+        if lista[i]==valor:
+            return i
+    return -1
+
 #================== Este es el menú de opciones. Aún falta agregar opciones =========================
 
 while True:
@@ -57,7 +63,7 @@ while True:
                     if nombre!='':
                         if nombre not in embarc_sin_repetir:
                             embarc_sin_repetir.append(nombre)
-                            embarcaciones.append(nombre)
+                            embarcaciones.append(nombre.replace("", "").lower)
                             #======== Aquí se crean los vectores para las capturas según cada embarcación =======
                             capturas.append([0,0,0,0,0,0,0])
                             break
@@ -70,15 +76,22 @@ while True:
             print('pepe2')
             print(Separar("Elija en qué embarcación desea registrar capturas"))
             print(f"Escriba {"ver"} para ver las embarcaciones sin registros...")
-            eleccion_captura=""
+            eleccion_captura=input("Elección:  ")
             eleccion_captura=eleccion_captura.replace(" ", "").lower
             if eleccion_captura=="ver":
                 for i in range(len(embarcaciones)):
                     if sum(capturas[i])!=0:
-                       print(embarcaciones)
+                       print(embarcaciones[i])
             else:
-                print("wawa")
-                    
+                indice_busqueda=busqueda_lineal(embarcaciones, eleccion_captura)
+                if indice_busqueda!=-1:
+                    for i in range(len(DIAS)):
+                        while True:
+                          capturas[indice_busqueda][i]=input(f"Ingrese las capturas de {embarcaciones[indice_busqueda]} el día {DIAS[i]}:  ")
+                          if validar_num(capturas[indice_busqueda][i]) and 0<capturas[indice_busqueda][i]<2001:
+                                  break
+                          else:
+                              print(Separar("Error: Se debe ingresar un número entero entre 0 y 2000"))
         case '3':
             print('pepe3')
         case '4':
