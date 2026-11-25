@@ -5,7 +5,7 @@ embarc_sin_repetir=[]
 capturas=[]
 cuota_diaria_kg=400
 ultimo_registro=0
-
+ingreso_embarcaciones=False
 
 #======== Aquí Estan las funciones. Haz click en la flecha atrás de def para expandir ======
 def validar_num(num):
@@ -30,7 +30,7 @@ def busqueda_lineal(lista, valor):
 #================== Este es el menú de opciones. Aún falta agregar opciones =========================
 
 while True:
-    print(f'{Separar('Elija la opción')}')
+    print(f'{Separar('Menú principal')}')
     print("1- Registrar embarcaciones")
     print("2- Registrar capturas")
     print("3- Mostrar lista de embarcaciones")
@@ -63,7 +63,10 @@ while True:
                     if nombre!='':
                         if nombre not in embarc_sin_repetir:
                             embarc_sin_repetir.append(nombre)
-                            embarcaciones.append(nombre.replace("", "").lower)
+                            nombre.lower
+                            nombre.replace(" ", "")
+                            embarcaciones.append(nombre)
+                            ingreso_embarcaciones=True
                             #======== Aquí se crean los vectores para las capturas según cada embarcación =======
                             capturas.append([0,0,0,0,0,0,0])
                             break
@@ -72,27 +75,52 @@ while True:
                     else:
                         print(Separar('Error: El nombre de la embarcación no puede estar vacío'))
                         
+        #========================== INGRESO DE CAPTURAS ====================================             
         case '2':
-            print('pepe2')
-            print(Separar("Elija en qué embarcación desea registrar capturas"))
-            print(f"Escriba {"ver"} para ver las embarcaciones sin registros...")
-            eleccion_captura=input("Elección:  ")
-            eleccion_captura=eleccion_captura.replace(" ", "").lower
-            if eleccion_captura=="ver":
-                for i in range(len(embarcaciones)):
-                    if sum(capturas[i])!=0:
-                       print(embarcaciones[i])
+            if ingreso_embarcaciones:
+                    while True:
+                        print(Separar("Elija una opción"))
+                        print("1- Registrar captura")
+                        print("2- Ver embarcaciones sin registros")
+                        print("3- Volver al menú principal")
+                        eleccion_captura_menu=input("Elección:  ")
+                        match eleccion_captura_menu:
+                            
+                            case "1":
+                                print(Separar("Elija en qué embarcación desea registrar capturas"))
+                                eleccion_captura=input("Elección:  ")
+                                indice_busqueda=busqueda_lineal(embarcaciones, eleccion_captura)
+                                print("indice: ", indice_busqueda)
+                                if indice_busqueda!=-1:
+                                    for i in range(len(DIAS)):
+                                        while True:
+                                            capturas[indice_busqueda][i]=input(f"Ingrese las capturas de {embarcaciones[indice_busqueda]} el día {DIAS[i]}:  ")
+                                            if validar_num(capturas[indice_busqueda][i]) and 0<int(capturas[indice_busqueda][i])<2001:
+                                                    capturas[indice_busqueda][i]=int(capturas[indice_busqueda][i])
+                                                    print(capturas[indice_busqueda][i])
+                                                    break
+                                            else:
+                                                print(Separar("Error: Se debe ingresar un número entero entre 0 y 2000"))
+                                else:
+                                    print(Separar("Error: No se ha encontrado la embarcación ingresada"))
+                                        
+                                
+                            case "2":
+                                embarcaciones_vacias=[]
+                                for i in range(len(embarcaciones)):
+                                    if sum(capturas[i])==0:
+                                        embarcaciones_vacias.append(embarcaciones[i])
+                                    print(embarcaciones_vacias)
+                                    
+                            case "3":
+                                break
+                            
+                            case _:
+                                print(Separar("Error: introduzca una opción válida"))
             else:
-                indice_busqueda=busqueda_lineal(embarcaciones, eleccion_captura)
-                if indice_busqueda!=-1:
-                    for i in range(len(DIAS)):
-                        while True:
-                          capturas[indice_busqueda][i]=input(f"Ingrese las capturas de {embarcaciones[indice_busqueda]} el día {DIAS[i]}:  ")
-                          if validar_num(capturas[indice_busqueda][i]) and 0<capturas[indice_busqueda][i]<2001:
-                                  break
-                          else:
-                              print(Separar("Error: Se debe ingresar un número entero entre 0 y 2000"))
-        case '3':
+                print(Separar("Error: No se han registrado embarcaciones, por lo que no se pueden ingresar capturas"))
+                                
+
             print('pepe3')
         case '4':
             print('pepe4')
