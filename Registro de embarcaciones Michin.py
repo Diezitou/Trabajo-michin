@@ -24,11 +24,12 @@ def Separar(n):
   
 def busqueda_lineal(lista, valor):
     """"Encuentra o no un valor dado sin distinguir mayúsculas ni minúsculas"""
-    valor_buscado = str(valor).lower()
+    valor_buscado = str(valor).lower().strip()
     for i in range(len(lista)):
-        if str(lista[i]).lower()==valor_buscado:
+        if str(lista[i]).lower().strip()==valor_buscado:
             return i
     return -1
+
 def suma_recursiva(lista):
     """Calcula recursivamente la suma de las capturas de una embarcación."""
     if len(lista) == 0:
@@ -63,11 +64,7 @@ def comparar_embar(embarcaciones, totales):             #12. identifca cual es l
         if totales[i] < totales[menor]:
             menor = i
 
-    print("Mayor captura:")
-    print(embarcaciones[mayor], ":", totales[mayor], "KG")
-
-    print("Menor captura:")
-    print(embarcaciones[menor], ":", totales[menor], "KG")
+    return embarcaciones[mayor], totales[mayor], embarcaciones[menor], totales[menor]
     
 def calcular_total_sem(embarcaciones, capturas):        # 10. calcular total semanal
     """calcula el total semanal de una embarcacion"""
@@ -92,7 +89,6 @@ def total_diario(embarcaciones, capturas):              # 11. calcular total de 
 
         total_dia.append(suma)
 
-    mejor_dia(total_dia)    # << Aquí es donde llama a la función.
     return total_dia
 
 def mejor_dia(total_dia):                               # Esta es la siguient función, es la que identific el mejor día de pesca, yayyyy
@@ -103,9 +99,7 @@ def mejor_dia(total_dia):                               # Esta es la siguient fu
         if total_dia[j] > total_dia[mayor]:
             mayor = j
 
-    print("\n==== MEJOR DÍA DE PESCA ====")
-    print("Día:", DIAS[mayor])
-    print("Total capturado:", total_dia[mayor], "KG")
+    return DIAS[mayor], total_dia[mayor]
     
 def ranking_embarcaciones(lista_nombres, matriz_capturas):
     "Devuelve dos listas ordenadas de mayor a menor captura semanal: los nombres y sus totales y no modifica las listas originales"
@@ -133,33 +127,25 @@ def ranking_embarcaciones(lista_nombres, matriz_capturas):
 
 def verificar_cuota(embarcaciones, capturas):               # 13. la cosa de la cuota, la cual tuve ke cambiarle a la variable esta okiii
     """Lista los casos en que una embarcación superó la cuota diaria"""
-    encontrado = False
-
-    print("\n==== EMBARCACIONES QUE SUPERARON LA CUOTA ====")
+    excesos = []
 
     for i in range(len(embarcaciones)):
         for j in range(len(DIAS)):
             if capturas[i][j] > cuota_diaria_kg:
+                excesos.append((embarcaciones[i], DIAS[j], capturas[i][j]))
 
-                print("Embarcación:", embarcaciones[i])
-                print("Día:", DIAS[j])
-                print("Captura:", capturas[i][j], "KG")
-                print("---------------------------")
-
-                encontrado = True
-
-    if encontrado == False:
-        print("Ninguna embarcación ha superado la cuota diaria.")
+    return excesos
 
 def mostrar_matriz(embarcaciones, capturas,             # 14. muestr la matriz alinead, el punto final, okei, todo listo cuate
                    totales, total_dia):
-    """Muestra la matriz alineada con totales por fila y por columna"""
+    """Construye la matriz alineada con totales por fila y por columna"""
+    lineas = []
     enca = f"{'Embarcación':<15}"
     
     for j in range(len(DIAS)):
         enca = enca + f"{DIAS[j]:>8}"
     enca = enca + f"{'Total':>10}"
-    print(enca)
+    lineas.append(enca)
     
     for i in range(len(embarcaciones)):
         fila = f"{embarcaciones[i]:<15}"
@@ -167,7 +153,7 @@ def mostrar_matriz(embarcaciones, capturas,             # 14. muestr la matriz a
         for j in range(len(DIAS)):
             fila = fila + f"{capturas[i][j]:>8}"
         fila = fila + f"{totales[i]:>10}"
-        print(fila)
+        lineas.append(fila)
     fila_total = f"{'TOTAL DIA':<15}"
     total_general = 0
     
@@ -175,8 +161,8 @@ def mostrar_matriz(embarcaciones, capturas,             # 14. muestr la matriz a
         fila_total = fila_total + f"{total_dia[j]:>8}"
         total_general = total_general + total_dia[j]
     fila_total = fila_total + f"{total_general:>10}"
-    print(fila_total)
-    return fila_total
+    lineas.append(fila_total)
+    return "\n".join(lineas)
 
 def probar():
     """Verifica funciones de cálculo y recursión con casos normales y de borde"""
@@ -206,6 +192,12 @@ def probar():
     assert tot_iter == [1850, 1310, 1960, 620]
     for i in range(len(embs_prueba)):
         assert suma_recursiva(caps_prueba[i]) == tot_iter[i]
+
+    tot_dias_prueba = total_diario(embs_prueba, caps_prueba)
+    assert tot_dias_prueba == [1060, 730, 530, 700, 1150, 890, 680]
+    assert mejor_dia(tot_dias_prueba) == ("viernes", 1150)
+    assert comparar_embar(embs_prueba, tot_iter) == ("La Manabita", 1960, "Estrella", 620)
+    assert len(verificar_cuota(embs_prueba, caps_prueba)) == 4
 
 #================== Este es el menú de opciones. Aún falta agregar opciones =========================
 
@@ -252,7 +244,6 @@ while True:
                     if nombre!='':
                         if busqueda_lineal(embarc_sin_repetir, nombre) == -1:
                             embarc_sin_repetir.append(nombre)
-                            nombre.lower().replace(" ", "")
                             embarcaciones.append(nombre)
                             #======== Aquí se crean los vectores para las capturas según cada embarcación =======
                             capturas.append([0,0,0,0,0,0,0])
@@ -277,7 +268,6 @@ while True:
                             case "1":
                                 print(Separar("Elija en qué embarcación desea registrar capturas"))
                                 eleccion_captura=input("Elección:  ")
-                                eleccion_captura=eleccion_captura.lower().replace(" ", "")
                                 indice_busqueda=busqueda_lineal(embarcaciones, eleccion_captura)
                                 if indice_busqueda!=-1:
                                     for i in range(len(DIAS)):
@@ -295,7 +285,6 @@ while True:
                             case "2":
                                 print(Separar("Elija en qué embarcación desea registrar capturas"))
                                 eleccion_captura=input("Elección:  ")
-                                eleccion_captura=eleccion_captura.lower().replace(" ", "")
                                 indice_busqueda=busqueda_lineal(embarcaciones, eleccion_captura)
                                 if indice_busqueda!=-1:
                                     print("Ingrese el día de la semana que desee editar")
@@ -351,7 +340,6 @@ while True:
             if len(embarcaciones)!=0:
                 print(Separar("Seleccione la embarcacion que desea eliminar"))
                 eleccion_eliminar=input("Elección:  ")
-                eleccion_eliminar=eleccion_eliminar.lower().replace(" ", "")
                 indice_busqueda=busqueda_lineal(embarcaciones, eleccion_eliminar)
                 if indice_busqueda!=-1:
                     del embarcaciones[indice_busqueda]
@@ -385,6 +373,10 @@ while True:
                 print(Separar("Aún no hay embarcaciones registradas"))
             else:
                 totales_dia = total_diario(embarcaciones, capturas)
+                dia_top, kg_top = mejor_dia(totales_dia)
+                print("\n==== MEJOR DÍA DE PESCA ====")
+                print("Día:", dia_top)
+                print("Total capturado:", kg_top, "KG")
                 print(Separar("Total por día"))
                 for j in range(len(DIAS)):
                     print(f"{DIAS[j]}: {totales_dia[j]} kg")
@@ -394,13 +386,26 @@ while True:
                 print(Separar("Aún no hay embarcaciones registradas"))
             else:
                 totales = calcular_total_sem(embarcaciones, capturas)
-                comparar_embar(embarcaciones, totales)
+                emb_mayor, kg_mayor, emb_menor, kg_menor = comparar_embar(embarcaciones, totales)
+                print("Mayor captura:")
+                print(emb_mayor, ":", kg_mayor, "KG")
+                print("Menor captura:")
+                print(emb_menor, ":", kg_menor, "KG")
 
         case '9':
             if len(embarcaciones) == 0:
                 print(Separar("Aún no hay embarcaciones registradas"))
             else:
-                verificar_cuota(embarcaciones, capturas)
+                excesos = verificar_cuota(embarcaciones, capturas)
+                print("\n==== EMBARCACIONES QUE SUPERARON LA CUOTA ====")
+                if len(excesos) == 0:
+                    print("Ninguna embarcación ha superado la cuota diaria.")
+                else:
+                    for emb, dia, kg in excesos:
+                        print("Embarcación:", emb)
+                        print("Día:", dia)
+                        print("Captura:", kg, "KG")
+                        print("---------------------------")
 
         case '10':
             if len(embarcaciones) == 0:
@@ -408,7 +413,7 @@ while True:
             else:
                 totales = calcular_total_sem(embarcaciones, capturas)
                 totales_dia = total_diario(embarcaciones, capturas)
-                mostrar_matriz(embarcaciones, capturas, totales, totales_dia)
+                print(mostrar_matriz(embarcaciones, capturas, totales, totales_dia))
 
         case '11':
             if len(embarcaciones) == 0:
