@@ -1,5 +1,5 @@
 #==== Aquí se definen algunas variables y constantes =====
-DIAS = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"]
+DIAS = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"]
 embarcaciones = []
 embarc_sin_repetir=[]
 capturas=[]
@@ -33,7 +33,7 @@ while True:
     print(f'{Separar('Menú principal')}')
     print("1- Registrar embarcaciones")
     print("2- Registrar capturas")
-    print("3- Mostrar lista de embarcaciones")
+    print("3- Mostrar embarcaciones")
     print("4- Modificar embarcación existente")
     print("5- Salir")
     eleccion_menu=input('Elección: ')
@@ -81,8 +81,9 @@ while True:
                     while True:
                         print(Separar("Elija una opción"))
                         print("1- Registrar captura")
-                        print("2- Ver embarcaciones sin registros")
-                        print("3- Volver al menú principal")
+                        print("2- Editar capturas por día")
+                        print("3- Ver embarcaciones sin registros")
+                        print("4- Volver al menú principal")
                         eleccion_captura_menu=input("Elección:  ")
                         match eleccion_captura_menu:
                             
@@ -103,16 +104,40 @@ while True:
                                                 print(Separar("Error: Se debe ingresar un número entero entre 0 y 2000"))
                                 else:
                                     print(Separar("Error: No se ha encontrado la embarcación ingresada"))
-                                        
-                                
+                                                        
                             case "2":
+                                print(Separar("Elija en qué embarcación desea registrar capturas"))
+                                eleccion_captura=input("Elección:  ")
+                                indice_busqueda=busqueda_lineal(embarcaciones, eleccion_captura)
+                                print("indice: ", indice_busqueda)
+                                if indice_busqueda!=-1:
+                                    print("Ingrese el día de la semana que desee editar")
+                                    print("1-Lunes")
+                                    print("2-Martes")
+                                    print("3-Miercoles")
+                                    print("4-Jueves")
+                                    print("5-Viernes")
+                                    print("6-Sábado")
+                                    print("7-Domingo")        
+                                    eleccion_captura_dia=input("Elección:  ")
+                                    if validar_num(eleccion_captura_dia):
+                                        eleccion_captura_dia=int(validar_num(eleccion_captura_dia))
+                                        if 0<eleccion_captura_dia<8:
+                                            capturas[indice_busqueda][eleccion_captura_dia-1]=input(f"Ingrese las capturas de {embarcaciones[indice_busqueda]} el día {DIAS[eleccion_captura_dia-1]}:  ")
+                                            print(capturas)
+                                        else:
+                                            print(Separar("Error: Se debe ingresar un día válido [1-8]"))
+                                else:
+                                    print(Separar("Error: No se ha encontrado la embarcación ingresada"))
+                                    
+                            case "3":
                                 embarcaciones_vacias=[]
                                 for i in range(len(embarcaciones)):
                                     if sum(capturas[i])==0:
                                         embarcaciones_vacias.append(embarcaciones[i])
                                     print(embarcaciones_vacias)
                                     
-                            case "3":
+                            case "4":
                                 break
                             
                             case _:
@@ -121,9 +146,15 @@ while True:
                 print(Separar("Error: No se han registrado embarcaciones, por lo que no se pueden ingresar capturas"))
                                 
 
-            print('pepe3')
-        case '4':
-            print('pepe4')
+        case '3':
+            if ingreso_embarcaciones:
+                for i in range(len(embarcaciones)):
+                    print(f"{embarcaciones[i]} se encuentra en el indice {i}")
+                    
+            else:
+                print(Separar("Error: No se han registrado embarcaciones, por lo que no se pueden ingresar capturas"))
+                
+            
         case '5':
             print('pepe5')
             break
