@@ -1,10 +1,12 @@
 #==== Aquí se definen algunas variables y constantes =====
 DIAS = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"]
-embarcaciones = []
+embarcaciones = ["dfdffd", "xcdfdxvd", "skdnjds"]
 embarc_sin_repetir= []
-capturas = []
 capturas=[]
 cuota_diaria_kg=400
+registro_actualizado=False
+ultimo_registro=0
+
 
 #======== Aquí Estan las funciones. Haz click en la flecha atrás de def para expandir ======
 def validar_num(num):
@@ -34,10 +36,9 @@ while True:
         #================================INGRESO DE EMBARCACIONES===============================
         case '1':
             print('pepe1')
-            
                 #========Ingreso de la cantidad de embarcaciones que se van a ingresar======
             while True:
-                    cantidad_de_embarcaciones=input('Ingrese cuántas embarcaciones desea registrar (Min: 3, Max: 10)')
+                    cantidad_de_embarcaciones=input('Ingrese cuántas embarcaciones desea registrar (Min: 3, Max: 10):  ')
                     if validar_num(cantidad_de_embarcaciones):
                         if 2<int(cantidad_de_embarcaciones)<11:
                             if int(cantidad_de_embarcaciones):
@@ -57,18 +58,27 @@ while True:
                         if nombre not in embarc_sin_repetir:
                             embarc_sin_repetir.append(nombre)
                             embarcaciones.append(nombre)
-                            cantidad_de_embarcaciones=0 #==== Reinicia la varible en caso de que se quiran agregar más
+                            #======== Aquí se crean los vectores para las capturas según cada embarcación =======
+                            capturas.append([0,0,0,0,0,0,0])
                             break
                         else:
                             print(Separar('Error: La embaracación ya se encuentra agregada'))
                     else:
                         print(Separar('Error: El nombre de la embarcación no puede estar vacío'))
-            print(embarcaciones)
-                            
-                    
-                    
+                        
         case '2':
             print('pepe2')
+            print(Separar("Elija en qué embarcación desea registrar capturas"))
+            print(f"Escriba {"ver"} para ver las embarcaciones sin registros...")
+            eleccion_captura=""
+            eleccion_captura=eleccion_captura.replace(" ", "").lower
+            if eleccion_captura=="ver":
+                for i in range(len(embarcaciones)):
+                    if sum(capturas[i])!=0:
+                       print(embarcaciones)
+            else:
+                print("wawa")
+                    
         case '3':
             print('pepe3')
         case '4':
